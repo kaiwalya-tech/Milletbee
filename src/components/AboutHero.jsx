@@ -42,7 +42,7 @@ export default function AboutHero() {
         }
         @media (max-width: 767px) {
           .about-text {
-            transform: scale(1.15);
+            transform: scale(0.6);
           }
         }
 
@@ -65,10 +65,14 @@ export default function AboutHero() {
         /* Bee adjustments: shift 25% right and scale 1.5x */
         .about-bee {
           transform: translateX(25%) scale(1.5) rotate(5deg);
+          left: 62%;
+          top: -30%;
         }
         @media (max-width: 767px) {
           .about-bee {
             transform: translateX(10%) scale(1.1) rotate(-10deg);
+            top: -14%;
+            left: 38%;
           }
         }
       `}</style>
@@ -103,7 +107,7 @@ export default function AboutHero() {
           />
           {/* bee near the text box (shifted right 25% with scaling) */}
           <img
-            src="assets/bee-2.png"
+            src="assets/bee-6.png"
             alt="bee"
             className="
             about-bee

@@ -34,15 +34,15 @@ export default function HeroSection() {
         /* Small screens: scale down and nudge to avoid overlap */
         @media (max-width: 767px) {
           .hero-bee-1 {
-            top: -42px;
-            left: 60%;
-            transform: translateX(-50%);
-            width: 96px;
+            top: -67px;
+        left: 119%;
+        transform: translateX(-50%);
+        width: 95px;
           }
           .hero-bee-2 {
-            top: -18px;
-            left: -8%;
-            width: 72px;
+            top: -53px;
+        left: 0%;
+        width: 72px;
           }
         }
       `}</style>

@@ -12,7 +12,7 @@ export default function AboutPromise() {
   return (
     <section className="bg-white">
       {/* Top quote */}
-      <div className="max-w-4xl mx-auto px-6 py-10 text-center">
+      <div className="max-w-4xl mx-auto px-6 py-10 pt-0 text-center">
         <p
           className="text-[#492419] md:text-lg text-base leading-snug"
           style={{ fontFamily: "'Montserrat', sans-serif" }}

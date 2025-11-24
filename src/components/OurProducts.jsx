@@ -1,31 +1,36 @@
-// src/components/OurProducts.jsx
-import React, { useState } from "react";
+// File: src/components/OurProducts.jsx
+import React, { useMemo, useState } from "react";
 
 /**
- * OurProducts.jsx
- * - Place at: src/components/OurProducts.jsx
- * - Usage: <OurProducts />
- * - Images: placeholders used (replace URL generation if you have real image URLs)
+ * OurProducts.jsx (updated)
+ * - Removes duplicate categories (dedupe).
+ * - Shows 4 items for the active category (same placeholder logic).
+ * - Mobile now shows 2 items per row (default) while larger screens show more.
+ * - Image boxes keep their aspect ratio using the padding-bottom trick so images don't stretch.
  */
 
-const CATEGORIES = [
+const RAW_CATEGORIES = [
   "Ladoo",
-  "Chivda",
   "Festive Combos",
   "Featured Products",
+  "Chivda",
   "Cookies",
   "Healthy Bites",
+  // if duplicate entries appear in your source, they'll be removed below
 ];
 
 export default function OurProducts() {
+  // dedupe categories in case the source contains duplicates
+  const CATEGORIES = useMemo(() => Array.from(new Set(RAW_CATEGORIES)), []);
+
   const [active, setActive] = useState("Chivda");
 
-  // each category returns exactly 4 product items (replace with real data later)
+  // returns exactly 4 product items (replace with real data later)
   const productsFor = (category) =>
     Array.from({ length: 4 }).map((_, i) => ({
       id: `${category}-${i + 1}`,
       name: category,
-      // placeholder image URL (400x300) with text label — replace with real image URL later
+      // placeholder image URL (600x420) with text label — replace with real image URL later
       img: `https://via.placeholder.com/600x420.png?text=${encodeURIComponent(
         `${category} ${i + 1}`
       )}`,
@@ -51,7 +56,7 @@ export default function OurProducts() {
               <button
                 key={cat}
                 onClick={() => setActive(cat)}
-                className={`px-5 py-2 rounded-full text-sm md:text-base transition-colors duration-150 select-none ${
+                className={`px-5 py-2 rounded-full text-sm md:text-base transition-colors duration-150 select-none focus:outline-none ${
                   isActive
                     ? "bg-[#492419] text-white shadow-sm"
                     : "bg-white text-black border border-black/20"
@@ -64,19 +69,28 @@ export default function OurProducts() {
           })}
         </div>
 
-        {/* Products grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Products grid
+            - default (mobile): 2 columns
+            - md: 3 columns
+            - lg: 4 columns
+        */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {products.map((p) => (
             <div key={p.id} className="flex flex-col items-center">
+              {/* image container keeps original aspect ratio using padding-bottom trick */}
               <div
-                className="w-full rounded-lg overflow-hidden flex items-center justify-center"
-                style={{ backgroundColor: "#D9D9D9", height: 220 }}
+                className="w-full rounded-lg overflow-hidden"
+                style={{
+                  backgroundColor: "#D9D9D9",
+                  position: "relative",
+                  width: "100%",
+                  paddingBottom: "70%", // keeps 600x420 (h/w = 0.7)
+                }}
               >
-                {/* Image sits inside; if you want the grey box visible, use an actual transparent image or remove the img */}
                 <img
                   src={p.img}
                   alt={p.name}
-                  className="w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover"
                   onError={(e) => {
                     // if remote fails, hide image to show grey bg
                     e.currentTarget.style.display = "none";
@@ -85,7 +99,10 @@ export default function OurProducts() {
               </div>
 
               <div className="mt-4 text-center">
-                <div className="text-sm md:text-base font-medium" style={{ color: "#000" }}>
+                <div
+                  className="text-sm md:text-base font-medium"
+                  style={{ color: "#000" }}
+                >
                   {p.name}
                 </div>
               </div>

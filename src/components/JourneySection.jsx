@@ -21,20 +21,20 @@ export default function JourneySection() {
           .journey-bee-1, .journey-bee-2, .journey-bee-3 { position: absolute; z-index: 60; pointer-events: none; }
 
           /* Bee sizes increased by 1.5x from previous (desktop) */
-          .journey-bee-1 { width: 108px; right: -3%; top: 9%; transform: rotate(-6deg); }
-          .journey-bee-2 { width: 84px; left: 8%; top: 44%; transform: rotate(6deg); }
-          .journey-bee-3 { width: 66px; left: 56%; top: 98%; transform: rotate(-2deg); }
+          .journey-bee-1 { width: 108px; right: -3%; top: 29%; transform: rotate(-6deg); }
+          .journey-bee-2 { width: 84px; left: 8%; top: 54%; transform: rotate(6deg); }
+          .journey-bee-3 { width: 46px; left: 56%; top: 98%; transform: rotate(-2deg); }
 
           /* Responsive scaling/position tweaks */
           @media (max-width: 1024px) {
             .journey-bee-1 { width: 92px; right: 6%; top: 5%; }
             .journey-bee-2 { width: 72px; left: 6%; top: 46%; }
-            .journey-bee-3 { width: 56px; left: 38%; top: 62%; }
+            // .journey-bee-3 { width: 56px; left: 38%; top: 62%; }
           }
           @media (max-width: 640px) {
-            .journey-bee-1 { width: 64px; right: 4%; top: 4%; }
-            .journey-bee-2 { width: 56px; left: 4%; top: 42%; }
-            .journey-bee-3 { width: 48px; left: 30%; top: 56%; }
+            .journey-bee-1 { width: 46px; right: 3%; top: 19%; }
+            .journey-bee-2 { width: 48px; left: 9%; top: 63%; }
+            .journey-bee-3 { width: 31px; left: 49%; top: 97%; }
           }
         `}</style>
 
@@ -45,9 +45,11 @@ export default function JourneySection() {
             style={{
               fontFamily: "'Montserrat', sans-serif",
               fontWeight: 500,
-              fontSize: "25px",
+              fontSize: "18px",
               color: "#492419",
               maxWidth: "980px",
+              marginTop: '4rem',
+              marginBottom: '2.5rem',
             }}
           >
             From a tiny kitchen that smelled of roasted ragi and ghee to boxes flying into homes
@@ -106,8 +108,12 @@ export default function JourneySection() {
             width: 100%;
             height: 65vh;
             object-fit: cover;
-            object-position: bottom center; /* crop from bottom (keep top visible) */
-            filter: brightness(1.04) saturate(0.85);
+            object-position: bottom center;
+            
+            /* CHANGED: Removed brown by making it grayscale */
+            filter: grayscale(100%);
+            
+            /* Positioning & Opacity kept exactly the same */
             opacity: 0.16;
             display: block;
           }
@@ -116,7 +122,7 @@ export default function JourneySection() {
             .journey-bg-img { height: 48vh; }
           }
           @media (max-width: 640px) {
-            .journey-bg-img { height: 40vh; object-position: bottom center; opacity: 0.14; }
+            .journey-bg-img { height: 17vh; object-position: bottom center; opacity: 0.14; }
           }
         `}</style>
 
@@ -126,7 +132,10 @@ export default function JourneySection() {
           className="journey-bg-img"
           aria-hidden
         />
-      </section>
+
+        {/* ADDED: This overlay forces the Light Yellow color onto the grayscale image */}
+        <div className="absolute inset-0 w-full h-full bg-yellow-200 mix-blend-color pointer-events-none"></div>
+</section>
     </>
   );
 }

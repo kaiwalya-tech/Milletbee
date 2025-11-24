@@ -32,7 +32,7 @@ export default function Navbar() {
           {/* Logo (left) */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
-              <img src="assets/logo.png" alt="Logo" className="h-8 w-auto" />
+              <img src="assets/logo.png" alt="Logo" className="h-12 w-auto" />
             </Link>
           </div>
 
@@ -99,7 +99,7 @@ export default function Navbar() {
         {mobileOpen && (
           <div className="md:hidden border-t border-gray-100 bg-white">
             <div className="px-4 py-4 space-y-3">
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 items-center">
                 {LINKS.map(({ label, to }) => (
                   <NavLink
                     key={label}
