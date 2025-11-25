@@ -73,7 +73,7 @@ export default function AboutPromise() {
           <div className="flex justify-center md:justify-end">
             <div className="bg-[#ffffff] p-6 md:p-8 w-full max-w-sm md:max-w-md">
               <img
-                src="assets/about-person.png"
+                src="assets/about-person-f.png"
                 alt="Founder holding product"
                 className="w-full h-auto object-cover block"
                 style={{ display: "block" }}
