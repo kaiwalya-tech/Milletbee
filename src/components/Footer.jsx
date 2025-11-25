@@ -76,7 +76,7 @@ export default function Footer() {
               </h5>
               <ul className="space-y-2 text-sm" style={{ fontFamily: "'Montserrat', sans-serif", color: "#111827" }}>
                 <li><a href="#" className="hover:underline">About Us</a></li>
-                <li><a href="#" className="hover:underline">FAQ's</a></li>
+                <li><a href="#" className="hover:underline">Home</a></li>
                 <li><a href="#" className="hover:underline">Policies</a></li>
               </ul>
             </div>

@@ -11,7 +11,6 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 
 const LINKS = [
   { label: "Home", to: "/" },
-  { label: "Shop", to: "/shop" },
   { label: "About Us", to: "/about" },
   { label: "Contact Us", to: "/contact" },
 ];

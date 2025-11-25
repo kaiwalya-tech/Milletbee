@@ -1,25 +1,138 @@
 // src/components/FeaturedProducts.jsx
-import React from "react";
+import React, { useRef, useState } from "react";
 
 /**
- * FeaturedProducts.jsx (updated)
- * - Image fits edge-to-edge (cover)
- * - Removed redundant 'Granola' ribbon overlay
- * - Subtext font-size reduced
- * - Price stacked above Add To Card button
- * - Button fills with #F6C229 on hover (text remains black)
- *
- * Place this file at: src/components/FeaturedProducts.jsx
- * Test image path used below: /mnt/data/84f387c4-f67e-4c30-a31c-b5c74ad367b2.png
+ * FeaturedProducts.jsx
+ * - 3-column grid (md+) and 1-column mobile
+ * - Each card is 1:1 aspect ratio; images cover edge-to-edge
+ * - Per-card slideshow starts on hover/focus and is flexible (# images per product)
+ * - "Starting At" label added before price; button text = "Order Now"
+ * - Hover on card -> shadow; Hover on Order Now -> yellow background (text stays black)
  */
 
-const ITEMS = Array.from({ length: 4 }).map((_, i) => ({
-  id: i + 1,
-  title: "Pasta",
-  desc: "Neapolitan-Style Pizzas, Wood-Fired, Pure Veg. All Soul, No Shortcuts.",
-  price: "₹249",
-  img: "/assets/featured-product.png",
-}));
+const ITEMS = [
+  {
+    id: "fp-1",
+    title: "Granola Jar",
+    desc: "Crunchy millet granola made with nuts & seeds — no preservatives.",
+    price: 249,
+    images: [
+      "assets/featured-product.png",
+      "assets/our-p1-2.png",
+      "assets/our-p1-1.png",
+    ],
+  },
+  {
+    id: "fp-2",
+    title: "Roasted Millet Mix",
+    desc: "Savory roasted millet mixes — light, crunchy & wholesome.",
+    price: 199,
+    images: [
+      "assets/featured-product.png",
+      "assets/our-p1-2.png",
+      "assets/our-p1-1.png",
+    ],
+  },
+  {
+    id: "fp-3",
+    title: "Seed Crunch Bites",
+    desc: "Handmade bites with jaggery, ghee & a mix of super millets.",
+    price: 279,
+    images: [
+      "assets/featured-product.png",
+      "assets/our-p1-2.png",
+      "assets/our-p1-1.png",
+    ],
+  },
+];
+
+function FeaturedCard({ item }) {
+  const { title, desc, price, images = [] } = item;
+  const [idx, setIdx] = useState(0);
+  const intervalRef = useRef(null);
+
+  const start = () => {
+    if (intervalRef.current) return;
+    if (!images || images.length <= 1) return;
+    intervalRef.current = setInterval(() => {
+      setIdx((i) => (i + 1) % images.length);
+    }, 1400);
+  };
+
+  const stop = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    setIdx(0);
+  };
+
+  return (
+    <article
+      className="group bg-white rounded-2xl overflow-hidden transform transition duration-300 hover:shadow-2xl"
+      onMouseEnter={start}
+      onMouseLeave={stop}
+      onFocus={start}
+      onBlur={stop}
+      aria-label={title}
+    >
+      {/* image (1:1 square) */}
+      <div className="relative w-full" style={{ paddingBottom: "100%" }}>
+        {images && images.length ? (
+          images.map((src, i) => (
+            <img
+              key={i}
+              src={src}
+              alt={`${title} ${i + 1}`}
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+                i === idx ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+              }`}
+              onError={(e) => (e.currentTarget.style.display = "none")}
+            />
+          ))
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center bg-[#F4C542]">
+            <span className="text-sm text-[#492419]">No image</span>
+          </div>
+        )}
+      </div>
+
+      {/* body */}
+      <div className="px-6 py-5">
+        <h4
+          className="text-lg font-semibold mb-2"
+          style={{ fontFamily: "'Lexend Deca', sans-serif", color: "#111827" }}
+        >
+          {title}
+        </h4>
+
+        <p
+          className="text-sm mb-4 leading-tight"
+          style={{ fontFamily: "'Lexend Deca', sans-serif", color: "#374151" }}
+        >
+          {desc}
+        </p>
+
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <div className="text-xs text-gray-500">Starting At</div>
+            <div className="text-lg font-semibold" style={{ color: "#111827" }}>
+              ₹{price}
+            </div>
+          </div>
+
+          <button
+            className="ml-auto px-4 py-2 rounded-full border border-[#F6C229] bg-white text-sm font-medium transition-colors duration-150 shadow-sm hover:bg-[#F6C229] hover:text-black"
+            aria-label={`Order now ${title}`}
+            onClick={() => (window.location.hash = `#order-${item.id}`)}
+          >
+            Order Now
+          </button>
+        </div>
+      </div>
+    </article>
+  );
+}
 
 export default function FeaturedProducts() {
   return (
@@ -32,53 +145,10 @@ export default function FeaturedProducts() {
           Featured products
         </h3>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {ITEMS.map((item) => (
-            <article
-              key={item.id}
-              className="group bg-white rounded-lg overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-2xl"
-              aria-labelledby={`fp-${item.id}-title`}
-            >
-              {/* Image area: fits edge-to-edge */}
-              <div className="w-full h-64 bg-[#F4C542]">
-                <img
-                  src={item.img}
-                  alt={item.title}
-                  className="w-full h-full object-cover block"
-                />
-              </div>
-
-              {/* Card body */}
-              <div className="px-6 py-5">
-                <h4
-                  id={`fp-${item.id}-title`}
-                  className="text-lg font-semibold mb-2"
-                  style={{ fontFamily: "'Lexend Deca', sans-serif", color: "#111827" }}
-                >
-                  {item.title}
-                </h4>
-
-                <p
-                  className="text-xs md:text-sm mb-4 leading-tight"
-                  style={{ fontFamily: "'Lexend Deca', sans-serif", color: "#374151" }}
-                >
-                  {item.desc}
-                </p>
-
-                <div className="flex flex-col items-stretch gap-3">
-                  <div className="text-lg font-semibold" style={{ color: "#111827", fontFamily: "'Lexend Deca', sans-serif" }}>
-                    {item.price}
-                  </div>
-
-                  <button
-                    className="mt-2 w-full py-3 rounded-full border-2 border-[#F6C229] bg-white text-black text-sm font-medium transition-colors duration-200 group-hover:bg-[#F6C229] group-hover:text-black"
-                    aria-label={`Add ${item.title} to cart`}
-                  >
-                    Add To Card
-                  </button>
-                </div>
-              </div>
-            </article>
+        {/* grid: 1 col mobile, 3 cols md+ */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {ITEMS.map((it) => (
+            <FeaturedCard key={it.id} item={it} />
           ))}
         </div>
       </div>

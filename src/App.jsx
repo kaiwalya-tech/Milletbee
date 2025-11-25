@@ -8,6 +8,7 @@ import BannerCarousel from "./components/BannerCarousel";
 import NourishmentSection from "./components/NourishmentSection";
 import Footer from "./components/Footer";
 import About from "./pages/About";
+import NourishmentStats from "./components/NourishmentStats";
 
 export default function App() {
   return (
@@ -20,10 +21,10 @@ export default function App() {
             element={
               <main className="w-full">
                 <HeroSection />
-                <div className="max-w-6xl mx-auto px-6">
+                
                   <OurProducts />
+                  <NourishmentStats/>
                   <FeaturedProducts />
-                </div>
                 <NourishmentSection />
                 <BannerCarousel />
                 <div className="h-20" />

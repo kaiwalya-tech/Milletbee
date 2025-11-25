@@ -3,14 +3,14 @@ import React from "react";
 
 /**
  * HeroSection.jsx
- * - Bees are visible on all devices; bee-2 is 25% smaller than before.
- * - Position adjustments via internal CSS ensure stable placement across breakpoints.
- * - Uses local assets from /mnt/data as requested.
+ * - Adjusted overall hero height: mobile uses 60vh, desktop uses full screen (h-screen).
+ * - Keeps previous responsive tweaks for bees and background but ensures less vertical gap on mobile.
+ * - Uses local assets under /assets/.
  */
 
 export default function HeroSection() {
   return (
-    <section className="relative w-full h-screen bg-[#F4C542] overflow-hidden">
+    <section className="relative w-full h-[60vh] md:h-screen bg-[#F4C542] overflow-hidden">
       {/* Inline CSS for precise bee positioning & responsive tweaks */}
       <style>{`
         .hero-bee-1 {
@@ -18,7 +18,7 @@ export default function HeroSection() {
           top: -40px;
           left: 87%;
           transform: translateX(calc(-50% + 15%));
-          width: 144px; /* large size */
+          width: 144px;
           pointer-events: none;
           z-index: 60;
         }
@@ -26,41 +26,70 @@ export default function HeroSection() {
           position: absolute;
           top: -24px;
           left: -12%;
-          width: 108px; /* 25% less than previous 144/40-based size */
+          width: 108px; /* 25% less than previous */
           pointer-events: none;
           z-index: 60;
         }
 
-        /* Small screens: scale down and nudge to avoid overlap */
+        /* Background wrapper size control (desktop large, mobile smaller) */
+        .hero-bg-wrapper {
+          height: 60vh;
+        }
+        .hero-bg-wrapper img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: top;
+          display: block;
+        }
+
+        /* Small screens: scale down and nudge to avoid overlap; reduce bg height to ~half */
         @media (max-width: 767px) {
           .hero-bee-1 {
             top: -67px;
-        left: 119%;
-        transform: translateX(-50%);
-        width: 95px;
+            left: 119%;
+            transform: translateX(-50%);
+            width: 95px;
           }
           .hero-bee-2 {
             top: -53px;
-        left: 0%;
-        width: 72px;
+            left: 0%;
+            width: 72px;
+          }
+
+          /* make background much shorter on mobile (approx half of desktop) and keep it positioned lower */
+          .hero-bg-wrapper {
+            height: 28vh;
+          }
+          .hero-bg-wrapper img {
+            object-position: bottom; /* prefer cropping from bottom on mobile */
+            transform: translateY(8%);
+          }
+        }
+
+        /* Medium screens slight adjustment */
+        @media (min-width: 768px) and (max-width: 1023px) {
+          .hero-bg-wrapper {
+            height: 44vh;
           }
         }
       `}</style>
 
-      {/* Farm image at bottom (object-top so top remains visible; moved down slightly) */}
-      <div className="absolute inset-x-0 bottom-0 z-10 h-[60vh] overflow-hidden">
+      {/* Farm image at bottom (object-top for desktop; object-bottom handled in CSS for mobile) */}
+      <div className="absolute inset-x-0 bottom-0 z-10 overflow-hidden hero-bg-wrapper">
         <img
           src="assets/hero-bg.png"
           alt="farm background"
-          className="w-full h-full object-cover object-top block"
+          className="block"
           style={{ transform: "translateY(10%)" }}
         />
       </div>
 
-      {/* Content area */}
-      <div className="relative z-30 pt-[20vh]">
+      {/* Content area - reduced top padding on small screens */}
+      <div className="relative z-30 pt-[8vh] md:pt-[20vh]">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="h-[36vh] flex flex-col items-center justify-start text-center">
+          {/* height tuned so content fits well inside mobile 60vh and desktop screen */}
+          <div className="h-auto md:h-[36vh] flex flex-col items-center justify-start text-center">
             {/* Heading (two lines) with tight line-height */}
             <h1
               style={{ fontFamily: "'Orelega One', serif" }}
@@ -97,7 +126,7 @@ export default function HeroSection() {
             {/* Subheading (two lines) */}
             <p
               style={{ fontFamily: "'Montserrat', sans-serif" }}
-              className="mt-6 max-w-2xl text-[#492419] font-semibold text-[clamp(14px,1.6vw,18px)] z-40"
+              className="mt-4 md:mt-6 max-w-2xl text-[#492419] font-semibold text-[clamp(14px,1.6vw,18px)] z-40"
             >
               Enjoy preservative-free, flavorful millet-based
               <br />
@@ -107,7 +136,7 @@ export default function HeroSection() {
             {/* SHOP NOW button */}
             <a
               href="#shop"
-              className="inline-block mt-6 bg-[#492419] text-white px-8 py-3 rounded-full text-sm md:text-base font-medium shadow-sm transform transition-transform duration-200 hover:scale-105 z-50"
+              className="inline-block mt-4 md:mt-6 bg-[#492419] text-white px-8 py-3 rounded-full text-sm md:text-base font-medium shadow-sm transform transition-transform duration-200 hover:scale-105 z-50"
               style={{ boxShadow: "0 8px 22px rgba(73,36,25,0.18)" }}
             >
               SHOP NOW
